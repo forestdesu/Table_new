@@ -13,4 +13,5 @@
     <string name="account">Аккаунт</string>
     <string name="email">Email</string>
     <string name="password">Пароль</string>
+    <string name="sign_in_or_sign_up">Войдите или зарегистрируйтесь</string>
 </resources>
