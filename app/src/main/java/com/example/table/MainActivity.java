@@ -3,9 +3,12 @@ package com.example.table;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private TextView userEmail;
     private AlertDialog dialog;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void init(){
         nav_view = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawerLayout);
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
         nav_view.setNavigationItemSelectedListener(this);
+        drawerLayout.openDrawer(GravityCompat.START);
         //Test
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();

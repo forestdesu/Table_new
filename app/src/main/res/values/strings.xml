@@ -14,4 +14,9 @@
     <string name="email">Email</string>
     <string name="password">Пароль</string>
     <string name="sign_in_or_sign_up">Войдите или зарегистрируйтесь</string>
+    <!-- EditActivity-->
+    <string name="edit_ac_title">Название</string>
+    <string name="edit_ac_price">Цена</string>
+    <string name="edit_ac_description">Описание</string>
+    <string name="edit_ac_phone">Телефон</string>
 </resources>
