@@ -1,11 +1,15 @@
 package com.example.table;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView userEmail;
     private AlertDialog dialog;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private FloatingActionButton fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +52,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawerLayout);
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
         nav_view.setNavigationItemSelectedListener(this);
-        drawerLayout.openDrawer(GravityCompat.START);
-        //Test
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        toolbar = findViewById(R.id.toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.toggle_open, R.string.toggle_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
         mAuth = FirebaseAuth.getInstance();
-        DatabaseReference myRef = database.getReference("Tabla");
-        myRef.setValue("Hello, World4!");
+        fb = findViewById(R.id.fb);
     }
 
     public void onStart() {
         super.onStart();
         getUserData();
+    }
+    public void onClickEdit(View view){
+        Intent i = new Intent(MainActivity.this, EditActivity.class);
+        startActivity(i);
     }
 
     private void getUserData() {

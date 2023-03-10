@@ -93,7 +93,7 @@ public class EditActivity extends AppCompatActivity {
         });
     }
     public void onClickSavePost(View view){
-
+        savePost();
     }
     public void onClickImage(View view){
         getImage();
@@ -108,14 +108,17 @@ public class EditActivity extends AppCompatActivity {
         dRef = FirebaseDatabase.getInstance().getReference(spinner.getSelectedItem().toString());
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getUid() != null) {
+            String key = dRef.push().getKey();
             NewPost post = new NewPost();
+
             post.setImageId(uploadUri.toString());
             post.setTitle(edTitle.getText().toString());
             post.setPhone(edPhone.getText().toString());
             post.setPrice(edPrice.getText().toString());
             post.setDisc(edDisc.getText().toString());
+            post.setKey(key);
 
-            //dRef.child(mAuth.getUid()).
+            if (key != null) dRef.child(mAuth.getUid()).child(key).setValue(post);
         }
     }
 }
