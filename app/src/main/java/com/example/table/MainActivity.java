@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +18,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.table.adapter.PostAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private NavigationView nav_view;
     private FirebaseAuth mAuth;
@@ -39,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private FloatingActionButton fb;
+    private PostAdapter.OnItemClickCustom onItemClickCustom;
+    private RecyclerView rcView;
+    private PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void init(){
+        setOnItemClickCustom();
         nav_view = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawerLayout);
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
@@ -58,12 +69,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         mAuth = FirebaseAuth.getInstance();
         fb = findViewById(R.id.fb);
+        rcView = findViewById(R.id.recyclerView);
+        rcView.setLayoutManager(new LinearLayoutManager(this));
+        List<NewPost> arrayTestPost = new ArrayList<>();
+        NewPost newPost = new NewPost();
+        newPost.setTitle("Mercedes");
+        newPost.setPhone("131313");
+        newPost.setPrice("100000");
+        newPost.setDisc("Pudge");
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        arrayTestPost.add(newPost);
+        postAdapter = new PostAdapter(arrayTestPost, this, onItemClickCustom);
+        rcView.setAdapter(postAdapter);
+
+
+    }
+    private void setOnItemClickCustom() {
+        onItemClickCustom = new PostAdapter.OnItemClickCustom() {
+            @Override
+            public void onItemSelected(int position) {
+                Log.d("MyLog", "Position: " + position);
+            }
+        };
     }
 
     public void onStart() {
         super.onStart();
         getUserData();
     }
+
     public void onClickEdit(View view){
         Intent i = new Intent(MainActivity.this, EditActivity.class);
         startActivity(i);
@@ -166,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Email или пароль пустой", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void signIn(String email, String password) {
         if (!email.equals("") && !password.equals(""))
         {
@@ -197,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Email или пароль пустой", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void SignOut(){
         mAuth.signOut();
         getUserData();
