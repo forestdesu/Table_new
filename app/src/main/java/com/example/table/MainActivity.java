@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.table.adapter.DataSender;
 import com.example.table.adapter.PostAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PostAdapter.OnItemClickCustom onItemClickCustom;
     private RecyclerView rcView;
     private PostAdapter postAdapter;
+    private DataSender dataSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,25 +75,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fb = findViewById(R.id.fb);
         rcView = findViewById(R.id.recyclerView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
-        List<NewPost> arrayTestPost = new ArrayList<>();
-        NewPost newPost = new NewPost();
-        newPost.setTitle("Mercedes");
-        newPost.setPhone("131313");
-        newPost.setPrice("100000");
-        newPost.setDisc("Pudge");
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        arrayTestPost.add(newPost);
-        postAdapter = new PostAdapter(arrayTestPost, this, onItemClickCustom);
-        rcView.setAdapter(postAdapter);
 
-
+        getDataDB();
+        DbManager dbManager = new DbManager(dataSender);
+        dbManager.getDataFromDb("Машины");
     }
+
+    private void getDataDB(){
+        dataSender = new DataSender() {
+            @Override
+            public void onDataRecived(List<NewPost> listData) {
+                Collections.reverse(listData);
+                postAdapter.updateAdapter(listData);
+            }
+        };
+    }
+
     private void setOnItemClickCustom() {
         onItemClickCustom = new PostAdapter.OnItemClickCustom() {
             @Override

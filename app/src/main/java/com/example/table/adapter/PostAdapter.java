@@ -1,6 +1,7 @@
 package com.example.table.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.table.NewPost;
 import com.example.table.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -60,9 +62,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             this.onItemClickCustom = onItemClickCustom;
         }
         public void setData(NewPost newPost){
+            Log.w("fwe", "img - " + newPost.getImageId());
+            Log.w("fwe", "uid - " + newPost.getUid());
+            Log.w("fwe", "img - " + newPost.getTitle());
+            //Picasso.with(context).load(newPost.getImageId()).into(imAds);
+            //Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/tabledatabase-1c0fb.appspot.com/o/Images%2F1679890827138_image?alt=media&token=c815216c-1eb5-4d7e-9290-96d052c27f2a").into(imAds);
             tvTitle.setText(newPost.getTitle());
             String price_tel = "Цена: " + newPost.getPrice() + " Телефон: " + newPost.getPhone();
             tvPriceTel.setText(price_tel);
+            //tvDisc.setText(newPost.getDisc());
         }
 
         @Override
@@ -72,5 +80,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
     }
     public interface OnItemClickCustom {
         public void onItemSelected(int position);
+    }
+    public void updateAdapter(List<NewPost> listData) {
+        arrayPost.clear();
+        arrayPost.addAll(listData);
+        notifyDataSetChanged();
     }
 }
