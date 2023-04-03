@@ -18,12 +18,6 @@
         <item android:title="@string/dm_ads"
             android:id="@+id/id_dm_ads"
             android:icon="@drawable/ic_dm_ads"/>
-        <item android:title="@string/sign_up"
-            android:id="@+id/id_sign_up"
-            android:icon="@drawable/ic_sign_up"/>
-        <item android:title="@string/sign_in"
-            android:id="@+id/id_sign_in"
-            android:icon="@drawable/ic_sign_in"/>
     </group>
     <item android:title="@string/account">
         <menu>

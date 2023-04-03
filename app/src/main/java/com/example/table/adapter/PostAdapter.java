@@ -57,20 +57,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvPriceTel = itemView.findViewById(R.id.tvPriceTel);
             tvDisc = itemView.findViewById(R.id.tvDisc);
-            imAds = itemView.findViewById(R.id.imItem);
+            imAds = itemView.findViewById(R.id.imAds);
             itemView.setOnClickListener(this);
             this.onItemClickCustom = onItemClickCustom;
         }
         public void setData(NewPost newPost){
-            Log.w("fwe", "img - " + newPost.getImageId());
-            Log.w("fwe", "uid - " + newPost.getUid());
-            Log.w("fwe", "img - " + newPost.getTitle());
-            //Picasso.with(context).load(newPost.getImageId()).into(imAds);
-            //Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/tabledatabase-1c0fb.appspot.com/o/Images%2F1679890827138_image?alt=media&token=c815216c-1eb5-4d7e-9290-96d052c27f2a").into(imAds);
+            Picasso.get().load(newPost.getImageId()).into(imAds);
             tvTitle.setText(newPost.getTitle());
-            String price_tel = "Цена: " + newPost.getPrice() + " Телефон: " + newPost.getPhone();
+            String price_tel = "Цена: " + newPost.getPrice() + "\nТелефон: " + newPost.getPhone();
             tvPriceTel.setText(price_tel);
-            //tvDisc.setText(newPost.getDisc());
+            tvDisc.setText(newPost.getDisc());
         }
 
         @Override
