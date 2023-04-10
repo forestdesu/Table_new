@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PostAdapter postAdapter;
     private DataSender dataSender;
     private DbManager dbManager;
+    public static String MAUTH = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +119,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             userEmail.setText(currentUser.getEmail());
+            MAUTH = mAuth.getUid();
         } else {
             userEmail.setText(R.string.sign_in_or_sign_up);
+            MAUTH = "";
         }
     }
 

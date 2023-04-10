@@ -25,6 +25,10 @@ public class DbManager {
     private int cat_ads_counter = 0;
     private String[] category_ads = {"Машины", "Компьютеры", "Смартфоны", "Бытовая техника"};
 
+    public void deleteItem()
+    {
+
+    }
     public DbManager(DataSender dataSender) {
         this.dataSender = dataSender;
         newPostsList = new ArrayList<>();
@@ -33,13 +37,13 @@ public class DbManager {
 
     public void getDataFromDb(String path) {
         DatabaseReference dbRef = db.getReference(path);
-        mQuery = dbRef.orderByChild("anuncios/time");
+        mQuery = dbRef.orderByChild("anuncio/time");
         readDataUpdate();
     }
     public void getMyAdsDataFromDb(String uid) {
         if (newPostsList.size() > 0) newPostsList.clear();
         DatabaseReference dbRef = db.getReference(category_ads[0]);
-        mQuery = dbRef.orderByChild("anuncios/uid").equalTo(uid);
+        mQuery = dbRef.orderByChild("anuncio/uid").equalTo(uid);
         readMyAdsDataUpdate(uid);
         cat_ads_counter++;
     }
@@ -80,7 +84,7 @@ public class DbManager {
                 else
                 {
                     DatabaseReference dbRef = db.getReference(category_ads[cat_ads_counter]);
-                    mQuery = dbRef.orderByChild("anuncios/uid").equalTo(uid);
+                    mQuery = dbRef.orderByChild("anuncio/uid").equalTo(uid);
                     readMyAdsDataUpdate(uid);
                     cat_ads_counter++;
                 }

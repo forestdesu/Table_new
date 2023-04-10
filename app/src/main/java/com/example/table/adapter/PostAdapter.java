@@ -5,12 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.table.MainActivity;
 import com.example.table.NewPost;
 import com.example.table.R;
 import com.squareup.picasso.Picasso;
@@ -49,6 +53,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
 
         private TextView tvPriceTel, tvDisc, tvTitle;
         private ImageView imAds;
+        private LinearLayout edit_layout;
+        private ImageButton deleteButton;
         private OnItemClickCustom onItemClickCustom;
 
 
@@ -58,15 +64,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             tvPriceTel = itemView.findViewById(R.id.tvPriceTel);
             tvDisc = itemView.findViewById(R.id.tvDisc);
             imAds = itemView.findViewById(R.id.imAds);
+            edit_layout = itemView.findViewById(R.id.edit_layout);
+            deleteButton = itemView.findViewById(R.id.emDeleteItem);
             itemView.setOnClickListener(this);
             this.onItemClickCustom = onItemClickCustom;
         }
         public void setData(NewPost newPost){
+            if (newPost.getUid().equals(MainActivity.MAUTH))
+            {
+                edit_layout.setVisibility(View.VISIBLE);
+            }
+            else {
+                edit_layout.setVisibility(View.GONE);
+            }
             Picasso.get().load(newPost.getImageId()).into(imAds);
             tvTitle.setText(newPost.getTitle());
             String price_tel = "Цена: " + newPost.getPrice() + "\nТелефон: " + newPost.getPhone();
             tvPriceTel.setText(price_tel);
-            tvDisc.setText(newPost.getDisc());
+            String textDisc = newPost.getDisc();
+            if (textDisc.length() > 50) textDisc = textDisc.substring(0, 50) + "...";
+            tvDisc.setText(textDisc);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "delete item", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
