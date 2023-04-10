@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DataSender dataSender;
     private DbManager dbManager;
     public static String MAUTH = "";
+    private String currentCat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         init();
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentCat.equals("my_ads")) dbManager.getDataFromDb(mAuth.getUid());
+        else dbManager.getDataFromDb(currentCat);
+    }
     private void init(){
         setOnItemClickCustom();
         nav_view = findViewById(R.id.nav_view);
@@ -82,8 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rcView.setAdapter(postAdapter);
 
         getDataDB();
-        dbManager = new DbManager(dataSender);
+        dbManager = new DbManager(dataSender, this);
         dbManager.getDataFromDb("Машины");
+        postAdapter.setDbManager(dbManager);
+        currentCat = "Машины";
     }
 
     private void getDataDB(){
@@ -131,18 +139,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.id_my_ads:
+                currentCat = "my_ads";
                 dbManager.getMyAdsDataFromDb(mAuth.getUid());
                 break;
             case R.id.id_cars_ads:
+                currentCat = "Машины";
                 dbManager.getDataFromDb("Машины");
                 break;
             case R.id.id_pc_ads:
+                currentCat = "Компьютеры";
                 dbManager.getDataFromDb("Компьютеры");
                 break;
             case R.id.id_smartphone_ads:
+                currentCat = "Смартфоны";
                 dbManager.getDataFromDb("Смартфоны");
                 break;
             case R.id.id_dm_ads:
+                currentCat = "Бытовая техника";
                 dbManager.getDataFromDb("Бытовая техника");
                 break;
             case R.id.id_sign_up:
